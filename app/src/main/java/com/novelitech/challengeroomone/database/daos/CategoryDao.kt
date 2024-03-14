@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.Flow
 interface CategoryDao {
 
     @Insert
-    suspend fun insert(category: CategoryEntity) : Flow<Unit>
+    suspend fun insert(category: CategoryEntity)
 
     @Delete
-    fun delete(category: CategoryEntity) : Flow<Unit>
+    suspend fun delete(category: CategoryEntity)
 
     @Query("SELECT * FROM categories ORDER BY name ASC")
-    suspend fun getAll() : Flow<List<CategoryEntity>>
+    fun getAll() : Flow<List<CategoryEntity>>
 }
