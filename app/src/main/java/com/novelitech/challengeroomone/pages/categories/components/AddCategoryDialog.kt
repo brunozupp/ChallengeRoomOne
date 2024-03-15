@@ -67,6 +67,16 @@ fun AddCategoryDialog(
                         Text(text = "Name")
                     }
                 )
+
+                TextField(
+                    value = state.descriptionCategory,
+                    onValueChange = {
+                        onEvent(CategoriesEvent.SetDescriptionCategory(it))
+                    },
+                    label = {
+                        Text(text = "Description")
+                    }
+                )
             }
         }
     )

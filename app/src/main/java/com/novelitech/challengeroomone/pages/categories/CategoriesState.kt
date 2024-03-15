@@ -5,5 +5,6 @@ import com.novelitech.challengeroomone.database.entities.CategoryEntity
 data class CategoriesState(
     val categories: List<CategoryEntity> = emptyList(),
     val nameCategory: String = "",
+    val descriptionCategory: String = "",
     val isDialogOpened: Boolean = false,
 )

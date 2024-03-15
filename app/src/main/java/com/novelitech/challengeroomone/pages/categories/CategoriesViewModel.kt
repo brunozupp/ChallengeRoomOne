@@ -44,13 +44,15 @@ class CategoriesViewModel(
             CategoriesEvent.SaveCategory -> {
 
                 val nameCategory = state.value.nameCategory
+                val descriptionCategory = state.value.descriptionCategory
 
                 if(nameCategory.isBlank()) {
                     return
                 }
 
                 val category = CategoryEntity(
-                    name = nameCategory
+                    name = nameCategory,
+                    description = descriptionCategory
                 )
 
                 viewModelScope.launch {
@@ -60,6 +62,7 @@ class CategoriesViewModel(
                 _state.update {
                     it.copy(
                         nameCategory = "",
+                        descriptionCategory = "",
                         isDialogOpened = false,
                     )
                 }
@@ -68,6 +71,13 @@ class CategoriesViewModel(
                 _state.update {
                     it.copy(
                         nameCategory = event.name
+                    )
+                }
+            }
+            is CategoriesEvent.SetDescriptionCategory -> {
+                _state.update {
+                    it.copy(
+                        descriptionCategory = event.description
                     )
                 }
             }

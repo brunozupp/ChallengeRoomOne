@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.novelitech.challengeroomone.pages.categories.components.AddCategoryDialog
+import com.novelitech.challengeroomone.pages.categories.components.CategoryTile
 import com.novelitech.challengeroomone.ui.theme.BlueApp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,32 +97,16 @@ fun CategoriesPage(viewModel: CategoriesViewModel) {
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     items(state.value.categories) { category ->
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Row{
-                                Text(
-                                    text = category.name,
-                                    fontSize = 16.sp,
-                                    modifier = Modifier.weight(1f)
-                                )
 
-                                Spacer(modifier = Modifier.width(10.dp))
-
-                                Icon(
-                                    imageVector = Icons.Default.Delete,
-                                    contentDescription = "Delete category",
-                                    modifier = Modifier.clickable {
-                                        viewModel.onEvent(CategoriesEvent.DeleteCategory(category))
-                                    }
-                                )
+                        CategoryTile(
+                            category = category,
+                            onDelete = {
+                                viewModel.onEvent(CategoriesEvent.DeleteCategory(category))
                             }
-                        }
+                        )
                     }
                 }
             }
-
-
         }
     }
 }
