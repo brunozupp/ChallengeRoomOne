@@ -13,4 +13,6 @@ sealed interface CategoriesEvent {
     object ShowDialog: CategoriesEvent
 
     object HideDialog: CategoriesEvent
+
+    object FetchData: CategoriesEvent
 }

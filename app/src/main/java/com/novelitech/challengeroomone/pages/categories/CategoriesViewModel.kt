@@ -78,6 +78,17 @@ class CategoriesViewModel(
                     )
                 }
             }
+
+            CategoriesEvent.FetchData -> {
+                viewModelScope.launch {
+
+                    categoryDao.getAll().collectLatest { list ->
+                        _categories.update {
+                            list
+                        }
+                    }
+                }
+            }
         }
     }
 }
