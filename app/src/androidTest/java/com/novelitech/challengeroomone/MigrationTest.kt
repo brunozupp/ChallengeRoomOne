@@ -1,5 +1,6 @@
 package com.novelitech.challengeroomone
 
+import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -46,5 +47,56 @@ class MigrationTest {
             moveToFirst()
             Truth.assertThat(getString(getColumnIndex("name"))).isEqualTo("toy")
         }
+    }
+
+    @Test
+    fun migration1To2_insertColumnDescriptionWithDefaultValueEmpty() {
+
+        helper.createDatabase(DB_NAME, 1).apply {
+            execSQL("INSERT INTO categories(name) VALUES('toy')")
+            close()
+        }
+
+        val db = helper.runMigrationsAndValidate(DB_NAME, 2, true, AppDatabase.migration1To2)
+
+        db.query("SELECT * FROM categories").apply {
+            moveToFirst()
+            Truth.assertThat(getString(getColumnIndex("description"))).isEqualTo("")
+        }
+    }
+
+    @Test
+    fun migration1To2_insertColumnDescriptionWithSpecificValue() {
+
+        helper.createDatabase(DB_NAME, 1).apply {
+            close()
+        }
+
+        val db = helper.runMigrationsAndValidate(DB_NAME, 2, true, AppDatabase.migration1To2)
+
+        db.apply {
+            execSQL("INSERT INTO categories(name,description) VALUES('toy','category 1')")
+        }
+
+        db.query("SELECT * FROM categories").apply {
+            moveToFirst()
+            Truth.assertThat(getString(getColumnIndex("description"))).isEqualTo("category 1")
+        }
+    }
+
+    @Test
+    fun migration2_createdDatabaseDirectlyInVersion2() {
+
+        var db = helper.createDatabase(DB_NAME, 2).apply {
+            execSQL("INSERT INTO categories(name,description) VALUES('toy','category 1')")
+        }
+
+        db.query("SELECT * FROM categories").apply {
+            moveToFirst()
+            Truth.assertThat(getString(getColumnIndex("name"))).isEqualTo("toy")
+            Truth.assertThat(getString(getColumnIndex("description"))).isEqualTo("category 1")
+        }
+
+        db.close()
     }
 }

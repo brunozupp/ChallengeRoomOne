@@ -19,7 +19,11 @@ class MainActivity : ComponentActivity() {
             applicationContext,
             AppDatabase::class.java,
             "challengeroomone.db"
-        ).build()
+        )
+            .addMigrations(
+                AppDatabase.migration1To2,
+            )
+            .build()
     }
 
     private val viewModel by viewModels<CategoriesViewModel>(
