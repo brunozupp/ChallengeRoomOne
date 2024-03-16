@@ -29,13 +29,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.novelitech.challengeroomone.pages.categories.components.AddCategoryDialog
 import com.novelitech.challengeroomone.pages.categories.components.CategoryTile
 import com.novelitech.challengeroomone.ui.theme.BlueApp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CategoriesPage(viewModel: CategoriesViewModel) {
+fun CategoriesPage(
+    navController: NavHostController,
+    viewModel: CategoriesViewModel
+) {
 
     val state = viewModel.state.collectAsState()
 

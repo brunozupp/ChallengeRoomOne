@@ -85,4 +85,7 @@ dependencies {
 
     androidTestImplementation("androidx.room:room-testing:2.6.1")
     androidTestImplementation("com.google.truth:truth:1.4.2")
+
+    val nav_version = "2.7.7"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 }
