@@ -45,6 +45,10 @@ fun CategoryTile(
                         color = Color.Gray,
                     )
                 }
+                Text(
+                    text = "ID: ${category.id}",
+                    fontSize = 12.sp,
+                )
             }
 
             Spacer(modifier = Modifier.width(10.dp))
