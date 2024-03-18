@@ -24,6 +24,7 @@ class MainActivity : ComponentActivity() {
         )
             .addMigrations(
                 AppDatabase.migration1To2,
+                AppDatabase.migration2To3,
             )
             .build()
     }

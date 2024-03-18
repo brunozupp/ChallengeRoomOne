@@ -99,4 +99,74 @@ class MigrationTest {
 
         db.close()
     }
+
+    @Test
+    fun migration3_createdDatabaseDirectlyInVersion3() {
+
+        var db = helper.createDatabase(DB_NAME, 3).apply {
+            execSQL("INSERT INTO categories(name,description) VALUES('toy','category 1')")
+        }
+
+        var id = 0
+
+        db.query("SELECT id FROM categories").apply {
+            moveToFirst()
+            id = getInt(getColumnIndex("id"))
+        }
+
+        db.execSQL("INSERT INTO products(name,enabled,categoryId) VALUES ('Urso', 1, $id)")
+
+        db.query("SELECT * FROM products").apply {
+            moveToFirst()
+            Truth.assertThat(getString(getColumnIndex("name"))).isEqualTo("Urso")
+            Truth.assertThat(getInt(getColumnIndex("enabled"))).isEqualTo(1)
+            Truth.assertThat(getInt(getColumnIndex("categoryId"))).isEqualTo(id)
+        }
+    }
+
+    @Test
+    fun migrations_updateAllManually() {
+
+        helper.createDatabase(DB_NAME, 1).apply {
+            close()
+        }
+
+        helper.runMigrationsAndValidate(DB_NAME, 2, true, AppDatabase.migration1To2)
+
+        val db = helper.runMigrationsAndValidate(DB_NAME, 3, true, AppDatabase.migration2To3)
+
+        db.execSQL("INSERT INTO categories(name,description) VALUES('toy','category 1')")
+
+        var id = 0
+
+        db.query("SELECT id FROM categories").apply {
+            moveToFirst()
+            id = getInt(getColumnIndex("id"))
+        }
+
+        db.execSQL("INSERT INTO products(name,enabled,categoryId) VALUES ('Urso', 1, $id)")
+
+        db.query("SELECT * FROM products").apply {
+            moveToFirst()
+            Truth.assertThat(getString(getColumnIndex("name"))).isEqualTo("Urso")
+            Truth.assertThat(getInt(getColumnIndex("enabled"))).isEqualTo(1)
+            Truth.assertThat(getInt(getColumnIndex("categoryId"))).isEqualTo(id)
+        }
+    }
+
+    @Test
+    fun testAllMigrations() {
+
+        helper.createDatabase(DB_NAME, 1).apply { close() }
+
+        Room.databaseBuilder(
+            InstrumentationRegistry.getInstrumentation().targetContext,
+            AppDatabase::class.java,
+            DB_NAME,
+        ).addMigrations(AppDatabase.migration1To2, AppDatabase.migration2To3)
+            .build()
+            .apply {
+                openHelper.writableDatabase.close()
+            }
+    }
 }
