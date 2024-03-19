@@ -92,7 +92,7 @@ fun AddProductDialog(
                         }
                     },
                     label = {
-                        Text(text = "Description")
+                        Text(text = "Category ID")
                     },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                 )
