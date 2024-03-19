@@ -11,6 +11,7 @@ import androidx.room.Room
 import com.novelitech.challengeroomone.database.AppDatabase
 import com.novelitech.challengeroomone.pages.categories.CategoriesPage
 import com.novelitech.challengeroomone.pages.categories.CategoriesViewModel
+import com.novelitech.challengeroomone.pages.products.ProductsViewModel
 import com.novelitech.challengeroomone.ui.navigation.AppNavHost
 import com.novelitech.challengeroomone.ui.theme.ChallengeRoomOneTheme
 
@@ -39,6 +40,16 @@ class MainActivity : ComponentActivity() {
         }
     )
 
+    private val productsViewModel by viewModels<ProductsViewModel>(
+        factoryProducer = {
+            object: ViewModelProvider.Factory {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return ProductsViewModel(db.productDao) as T
+                }
+            }
+        }
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -46,6 +57,7 @@ class MainActivity : ComponentActivity() {
                 AppNavHost(
                     navController = rememberNavController(),
                     categoriesViewModel = categoriesViewModel,
+                    productsViewModel = productsViewModel,
                 )
             }
         }

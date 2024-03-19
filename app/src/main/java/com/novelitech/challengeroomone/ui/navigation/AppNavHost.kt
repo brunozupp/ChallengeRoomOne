@@ -9,6 +9,7 @@ import com.novelitech.challengeroomone.pages.categories.CategoriesPage
 import com.novelitech.challengeroomone.pages.categories.CategoriesViewModel
 import com.novelitech.challengeroomone.pages.home.HomePage
 import com.novelitech.challengeroomone.pages.products.ProductsPage
+import com.novelitech.challengeroomone.pages.products.ProductsViewModel
 
 @Composable
 fun AppNavHost(
@@ -16,6 +17,7 @@ fun AppNavHost(
     navController: NavHostController,
     startDestination: String = NavigationItem.Home.route,
     categoriesViewModel: CategoriesViewModel,
+    productsViewModel: ProductsViewModel,
 ) {
     NavHost(
         modifier = modifier,
@@ -32,7 +34,10 @@ fun AppNavHost(
             )
         }
         composable(NavigationItem.Products.route) {
-            ProductsPage(navController = navController)
+            ProductsPage(
+                navController = navController,
+                viewModel = productsViewModel,
+            )
         }
     }
 }
